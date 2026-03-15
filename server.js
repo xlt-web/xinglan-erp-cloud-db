@@ -1,4 +1,3 @@
-
 import express from 'express';
 import cors from 'cors';
 import pg from 'pg';
@@ -46,10 +45,7 @@ app.post('/api/login', (req, res) => {
   if (!USERS[username] || USERS[username].password !== password) {
     return fail(res, '账号或密码错误', 401);
   }
-  ok(res, {
-    token: 'demo-token',
-    user: { username, role: USERS[username].role }
-  }, '登录成功');
+  ok(res, { token: 'demo-token', user: { username, role: USERS[username].role } }, '登录成功');
 });
 
 app.get('/api/summary', auth, async (_req, res) => {
@@ -63,7 +59,6 @@ app.get('/api/summary', auth, async (_req, res) => {
     pool.query(`select coalesce(sum(paid_amount),0) as gtb_pending
                 from sales_orders where deleted_at is null and gtb_status = 'GTB未取'`)
   ]);
-
   ok(res, {
     total_sales: Number(sales.rows[0].total_sales),
     today_sales: Number(sales.rows[0].today_sales),
@@ -101,7 +96,6 @@ app.post('/api/sales-orders', auth, async (req, res) => {
     const { sale_date, customer_id, payment_method, bank_name, receive_type, paid_amount, remark, items } = req.body || {};
     if (!customer_id) return fail(res, '请选择客户');
     if (!Array.isArray(items) || items.length === 0) return fail(res, '请先加入商品');
-
     await client.query('begin');
 
     const customerQ = await client.query('select * from customers where id = $1', [customer_id]);
@@ -110,7 +104,6 @@ app.post('/api/sales-orders', auth, async (req, res) => {
 
     let totalQty = 0;
     let totalAmount = 0;
-
     for (const item of items) {
       const pQ = await client.query('select * from products where id = $1 for update', [item.product_id]);
       if (!pQ.rowCount) throw new Error('产品不存在');
@@ -118,17 +111,14 @@ app.post('/api/sales-orders', auth, async (req, res) => {
       const qty = Number(item.qty || 0);
       const unitPrice = Number(item.unit_price || p.price);
       const source = item.source || 'store';
-
       if (qty <= 0) throw new Error('数量必须大于0');
       if (source === 'store' && Number(p.store_stock) < qty) throw new Error(`门店库存不足：${p.name}`);
       if (source === 'factory' && Number(p.factory_stock) < qty) throw new Error(`工厂库存不足：${p.name}`);
-
       if (source === 'store') {
         await client.query('update products set store_stock = store_stock - $1 where id = $2', [qty, p.id]);
       } else {
         await client.query('update products set factory_stock = factory_stock - $1 where id = $2', [qty, p.id]);
       }
-
       totalQty += qty;
       totalAmount += qty * unitPrice;
     }
@@ -137,7 +127,6 @@ app.post('/api/sales-orders', auth, async (req, res) => {
     const unpaid = Math.max(totalAmount - paid, 0);
     const paymentStatus = unpaid === 0 ? '已结清' : (paid > 0 ? '部分结清' : '欠款中');
     const gtbStatus = bank_name === 'GTB' && paid > 0 ? 'GTB未取' : '非GTB';
-
     const orderNo = 'SO' + Date.now();
 
     const so = await client.query(`
@@ -187,16 +176,11 @@ app.post('/api/sales-orders/:id/repay', auth, async (req, res) => {
     const newUnpaid = Number(order.unpaid_amount) - amount;
     const status = newUnpaid === 0 ? '已结清' : '部分结清';
 
-    await client.query(`
-      update sales_orders
-      set paid_amount = $1, unpaid_amount = $2, payment_status = $3
-      where id = $4
-    `, [newPaid, newUnpaid, status, id]);
+    await client.query('update sales_orders set paid_amount = $1, unpaid_amount = $2, payment_status = $3 where id = $4',
+      [newPaid, newUnpaid, status, id]);
 
-    await client.query(`
-      insert into repayments (sales_order_id, customer_id, customer_name, repay_date, amount, method, bank_name)
-      values ($1,$2,$3,current_date,$4,'bank','CB')
-    `, [id, order.customer_id, order.customer_name, amount]);
+    await client.query(`insert into repayments (sales_order_id, customer_id, customer_name, repay_date, amount, method, bank_name)
+      values ($1,$2,$3,current_date,$4,'bank','CB')`, [id, order.customer_id, order.customer_name, amount]);
 
     await client.query('commit');
     ok(res, { id, paid_amount: newPaid, unpaid_amount: newUnpaid, payment_status: status }, '还款成功');
@@ -222,7 +206,6 @@ app.delete('/api/sales-orders/:id', auth, async (req, res) => {
     const q = await client.query('select * from sales_orders where id = $1 and deleted_at is null for update', [id]);
     if (!q.rowCount) throw new Error('销售单不存在');
     const items = await client.query('select * from sales_order_items where sales_order_id = $1', [id]);
-
     for (const item of items.rows) {
       if (item.source === 'store') {
         await client.query('update products set store_stock = store_stock + $1 where id = $2', [item.qty, item.product_id]);
@@ -230,7 +213,6 @@ app.delete('/api/sales-orders/:id', auth, async (req, res) => {
         await client.query('update products set factory_stock = factory_stock + $1 where id = $2', [item.qty, item.product_id]);
       }
     }
-
     await client.query('update sales_orders set deleted_at = now() where id = $1', [id]);
     await client.query('commit');
     ok(res, { id }, '销售单已删除并恢复库存');
@@ -249,12 +231,7 @@ app.get('/api/export/json', auth, async (_req, res) => {
     pool.query('select * from sales_orders where deleted_at is null order by id desc'),
     pool.query('select * from repayments order by id desc'),
   ]);
-  ok(res, {
-    products: products.rows,
-    customers: customers.rows,
-    sales_orders: salesOrders.rows,
-    repayments: repayments.rows,
-  });
+  ok(res, { products: products.rows, customers: customers.rows, sales_orders: salesOrders.rows, repayments: repayments.rows });
 });
 
 app.get('/{*splat}', (_req, res) => {

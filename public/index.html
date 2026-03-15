@@ -3,36 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>XINGLAN ERP 云端数据库版</title>
+  <title>XINGLAN ERP 完整版</title>
   <style>
-    :root{--bg:#f5f7fb;--card:#fff;--line:#e5e7eb;--text:#0f172a;--muted:#64748b;--nav:#0f172a;--nav2:#1e293b;--primary:#111827;--red:#dc2626;--radius:18px;--shadow:0 10px 30px rgba(15,23,42,.08)}
+    :root{--bg:#eef2f7;--card:#fff;--line:#e5e7eb;--text:#0f172a;--muted:#64748b;--nav:#08152f;--nav2:#112447;--primary:#0f172a;--danger:#ef4444;--radius:18px;--shadow:0 10px 30px rgba(15,23,42,.08)}
     *{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text)}
-    .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .hidden{display:none!important}.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
     .login-card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:28px}
     .login-card h1{margin:0 0 8px;font-size:28px}.login-card p{margin:0 0 18px;color:var(--muted)}
     .field{margin-bottom:14px}.field label{display:block;font-size:13px;margin-bottom:8px;color:var(--muted)}
-    .field input,.field select,.field textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:14px;font-size:14px;background:#fff}.field textarea{min-height:88px;resize:vertical}
-    .btn{border:1px solid var(--line);background:#fff;color:var(--text);padding:10px 14px;border-radius:14px;cursor:pointer;font-size:14px}
-    .btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}.btn.danger{background:var(--red);color:#fff;border-color:var(--red)}.btn.full{width:100%}
-    .muted{color:var(--muted)}.small{font-size:12px}.hidden{display:none !important}
-    .app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.sidebar{background:var(--nav);color:#fff;padding:18px 14px}.brand{padding:12px 12px 20px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px}.brand h2{margin:0;font-size:22px}.brand div{margin-top:6px;color:rgba(255,255,255,.65);font-size:12px}
+    .field input,.field select,.field textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:14px;font-size:14px;background:#fff}
+    .field textarea{min-height:88px;resize:vertical}.btn{border:1px solid var(--line);background:#fff;color:var(--text);padding:10px 14px;border-radius:14px;cursor:pointer;font-size:14px}
+    .btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}.btn.danger{background:var(--danger);color:#fff;border-color:var(--danger)}.btn.full{width:100%}.btn.small{padding:6px 10px;font-size:12px}
+    .muted{color:var(--muted)}.small{font-size:12px}.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+    .sidebar{background:var(--nav);color:#fff;padding:18px 14px}.brand{padding:12px 12px 20px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px}.brand h2{margin:0;font-size:22px}.brand div{margin-top:6px;color:rgba(255,255,255,.65);font-size:12px}
     .nav button{width:100%;text-align:left;border:0;background:transparent;color:#e2e8f0;padding:12px 14px;border-radius:14px;cursor:pointer;margin-bottom:6px;font-size:14px}.nav button:hover,.nav button.active{background:var(--nav2);color:#fff}
     .main{padding:20px}.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:18px 22px;box-shadow:var(--shadow);margin-bottom:16px}.topbar h3{margin:0;font-size:24px}.topbar p{margin:6px 0 0;color:var(--muted);font-size:13px}
-    .actions{display:flex;gap:10px;flex-wrap:wrap}.grid{display:grid;gap:16px}.stats{grid-template-columns:repeat(5,minmax(0,1fr))}.two-col{grid-template-columns:2fr 1fr}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}.card h4{margin:0 0 14px;font-size:18px}.stat .label{font-size:13px;color:var(--muted)}.stat .value{font-size:28px;font-weight:700;margin-top:8px}.stat .hint{font-size:12px;color:var(--muted);margin-top:6px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap}.grid{display:grid;gap:16px}.stats{grid-template-columns:repeat(4,minmax(0,1fr))}.two-col{grid-template-columns:1.2fr .8fr}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}.card h4{margin:0 0 14px;font-size:18px}
+    .stat .label{font-size:13px;color:var(--muted)}.stat .value{font-size:28px;font-weight:700;margin-top:8px}.stat .hint{font-size:12px;color:var(--muted);margin-top:6px}
     table{width:100%;border-collapse:collapse;font-size:14px} th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-weight:600}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:16px}
     .pill{display:inline-block;padding:4px 10px;border-radius:999px;font-size:12px;background:#eef2ff;color:#3730a3}.pill.ok{background:#dcfce7;color:#166534}.pill.warn{background:#ffedd5;color:#9a3412}.pill.bad{background:#fee2e2;color:#991b1b}
-    .chart{height:240px;display:flex;align-items:end;gap:10px;background:#f8fafc;border:1px solid var(--line);border-radius:16px;padding:16px}.bar-wrap{flex:1;text-align:center}.bar{width:100%;background:linear-gradient(180deg,#0f172a,#334155);border-radius:12px 12px 0 0;min-height:14px}.bar-label{font-size:12px;color:var(--muted);margin-top:8px}
-    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.form-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.row-actions{display:flex;gap:8px;flex-wrap:wrap}.info-box{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}.empty{text-align:center;color:var(--muted);padding:26px}
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.summary-box{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}
     @media (max-width:1200px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.two-col{grid-template-columns:1fr}}
-    @media (max-width:860px){.app{grid-template-columns:1fr}.topbar{flex-direction:column;align-items:flex-start}.form-grid,.form-grid.three,.stats{grid-template-columns:1fr}}
+    @media (max-width:860px){.app{grid-template-columns:1fr}.topbar{flex-direction:column;align-items:flex-start}.form-grid,.stats{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
 <div id="loginView" class="login-wrap">
   <div class="login-card">
     <h1>XINGLAN ERP</h1>
-    <p>云端数据库版</p>
+    <p>完整版</p>
     <div class="field"><label>账号</label><input id="username" value="admin"></div>
     <div class="field"><label>密码</label><input id="password" type="password" value="123456"></div>
     <button class="btn primary full" onclick="login()">登录</button>
@@ -42,12 +42,12 @@
 
 <div id="appView" class="app hidden">
   <aside class="sidebar">
-    <div class="brand"><h2>XINGLAN ERP</h2><div id="userInfo">管理员</div></div>
+    <div class="brand"><h2>XINGLAN ERP</h2><div id="userInfo">管理员 / admin</div></div>
     <div class="nav" id="nav"></div>
   </aside>
   <main class="main">
     <div class="topbar">
-      <div><h3 id="pageTitle">总概览</h3><p>数据来自云端 PostgreSQL。</p></div>
+      <div><h3 id="pageTitle">总概览</h3><p id="pageDesc">完整菜单 + 可点开页面 + 销售开单联动。</p></div>
       <div class="actions">
         <button class="btn" onclick="exportData()">导出数据</button>
         <button class="btn danger" onclick="logout()">退出</button>
@@ -56,78 +56,289 @@
     <div id="content"></div>
   </main>
 </div>
-document.getElementById('password').addEventListener('keydown', function (e) {
-  if (e.key === 'Enter') {
-    login();
-  }
-});
+
 <script>
+let currentPage = 'dashboard';
 let token = localStorage.getItem('token') || '';
 let currentUser = JSON.parse(localStorage.getItem('user') || 'null');
+let products = [];
+let customers = [];
+let salesOrders = [];
+let saleDraftItems = [];
+
+const MENUS = [
+  ['dashboard','总概览','查看系统汇总与核心数据'],
+  ['products','产品资料','查看产品与门店/工厂库存'],
+  ['customers','客户管理','查看客户与旧欠款'],
+  ['sales','销售开单','选择客户、商品、收款方式并自动联动'],
+  ['accounts','销售账目','查看所有销售单、还款、删除订单'],
+  ['receivables','欠款管理','查看应收与部分结清订单'],
+  ['bank','银行收款','查看转账与 GTB 状态'],
+  ['reports','月度报表','查看销售、已收、未收统计'],
+  ['settings','系统设置','系统说明与当前版本信息']
+];
 
 async function api(path, options = {}) {
   const res = await fetch(path, {
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-user': currentUser?.username || 'admin', ...(options.headers || {}) },
     ...options
   });
-
   const data = await res.json();
-
-  if (!res.ok || data.code !== 0) {
-    throw new Error(data.message || '请求失败');
-  }
-
+  if (!res.ok || data.code !== 0) throw new Error(data.message || '请求失败');
   return data.data;
 }
-
-async function login() {
-
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value.trim();
-
-  try {
-
-    const data = await api('/api/login', {
-      method: 'POST',
-      body: JSON.stringify({ username, password })
-    });
-
-    token = data.token;
-    currentUser = data.user;
-
-    localStorage.setItem('token', token);
-    localStorage.setItem('user', JSON.stringify(currentUser));
-
-    document.getElementById('loginView').style.display = 'none';
-    document.getElementById('appView').classList.remove('hidden');
-
-    document.getElementById('userInfo').textContent =
-      currentUser.role + ' / ' + currentUser.username;
-
-  } catch (err) {
-
-    alert(err.message);
-
-  }
-
+function money(v){ return new Intl.NumberFormat('zh-CN').format(Number(v || 0)); }
+function today(){ return new Date().toISOString().slice(0,10); }
+function renderNav() {
+  const navEl = document.getElementById('nav');
+  navEl.innerHTML = MENUS.map(([key, label]) => `<button class="${currentPage===key?'active':''}" onclick="go('${key}')">${label}</button>`).join('');
 }
-
+function setPageMeta() {
+  const item = MENUS.find(m => m[0] === currentPage);
+  document.getElementById('pageTitle').textContent = item ? item[1] : 'XINGLAN ERP';
+  document.getElementById('pageDesc').textContent = item ? item[2] : '';
+}
 function logout() {
-
   localStorage.removeItem('token');
   localStorage.removeItem('user');
-
   location.reload();
-
 }
-
-document.getElementById('password').addEventListener('keydown', function(e){
-
-  if(e.key === 'Enter'){
-    login();
+async function login() {
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+  try {
+    const data = await api('/api/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        username: usernameInput.value.trim(),
+        password: passwordInput.value.trim()
+      })
+    });
+    token = data.token;
+    currentUser = data.user;
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(currentUser));
+    await showApp();
+  } catch (e) {
+    alert(e.message || '登录失败');
   }
-
-});
+}
+async function loadBase(){
+  [products, customers, salesOrders] = await Promise.all([
+    api('/api/products'),
+    api('/api/customers'),
+    api('/api/sales-orders')
+  ]);
+}
+async function showApp(){
+  document.getElementById('loginView').classList.add('hidden');
+  document.getElementById('appView').classList.remove('hidden');
+  document.getElementById('userInfo').textContent = (currentUser.role || '管理员') + ' / ' + (currentUser.username || 'admin');
+  await loadBase();
+  await renderPage();
+}
+async function go(page){ currentPage = page; await renderPage(); }
+async function exportData(){
+  const data = await api('/api/export/json');
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'xinglan_erp_export.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+function statCard(label, value, hint){
+  return `<div class="card stat"><div class="label">${label}</div><div class="value">${value}</div><div class="hint">${hint}</div></div>`;
+}
+async function renderDashboard(){
+  const s = await api('/api/summary');
+  return `<div class="grid stats">
+    ${statCard('总客户欠款', money(s.total_debt), '系统实时汇总')}
+    ${statCard('今日销售额', money(s.today_sales), '今日销售订单统计')}
+    ${statCard('总销售额', money(s.total_sales), '全部销售单累计')}
+    ${statCard('GTB未取金额', money(s.gtb_pending), '银行待取金额')}
+  </div>
+  <div class="card" style="margin-top:16px"><h4>系统状态</h4><div class="muted">当前版本已经支持左侧完整菜单、可点开页面、销售开单联动库存/账目/欠款。</div></div>`;
+}
+function renderProducts(){
+  return `<div class="card"><h4>产品资料</h4><div class="table-wrap"><table><thead><tr><th>产品名称</th><th>型号</th><th>分类</th><th>单位</th><th>默认售价</th><th>门店库存</th><th>工厂库存</th></tr></thead><tbody>
+    ${products.map(p=>`<tr><td>${p.name}</td><td>${p.model}</td><td>${p.category}</td><td>${p.unit}</td><td>${money(p.price)}</td><td>${money(p.store_stock)}</td><td>${money(p.factory_stock)}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+}
+function renderCustomers(){
+  return `<div class="card"><h4>客户管理</h4><div class="table-wrap"><table><thead><tr><th>客户名称</th><th>电话</th><th>地址</th><th>旧欠款</th></tr></thead><tbody>
+    ${customers.map(c=>`<tr><td>${c.name}</td><td>${c.phone}</td><td>${c.address}</td><td>${money(c.opening_debt)}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+}
+function renderSales(){
+  saleDraftItems = [];
+  return `<div class="grid two-col">
+    <div class="card"><h4>销售开单</h4><div class="form-grid">
+      ${field('销售日期', `<input id="saleDate" type="date" value="${today()}">`)}
+      ${field('客户', `<select id="customerId">${customers.map(c=>`<option value="${c.id}">${c.name}</option>`).join('')}</select>`)}
+      ${field('收款方式', `<select id="paymentMethod"><option value="cash">现金结清</option><option value="bank">银行转账</option><option value="credit">全额记账</option><option value="partial">部分付款</option></select>`)}
+      ${field('收款银行', `<select id="bankName"><option value="现金">现金</option><option value="KBZ">KBZ</option><option value="CB">CB</option><option value="GTB">GTB</option></select>`)}
+      ${field('收款归属', `<select id="receiveType"><option value="store">门店收款</option><option value="factory">工厂收款</option><option value="bank">银行收款</option></select>`)}
+      ${field('已收金额', `<input id="paidAmount" type="number" value="0" oninput="refreshSaleSummary()">`)}
+      ${field('产品', `<select id="productId" onchange="fillPrice()">${products.map(p=>`<option value="${p.id}">${p.name} / ${p.model}</option>`).join('')}</select>`)}
+      ${field('出库来源', `<select id="source"><option value="store">门店库存</option><option value="factory">工厂库存</option></select>`)}
+      ${field('数量', `<input id="qty" type="number" value="1">`)}
+      ${field('单价', `<input id="unitPrice" type="number" value="${products[0]?.price || 0}">`)}
+      <div class="field" style="grid-column:1/-1"><label>备注</label><textarea id="remark"></textarea></div>
+    </div>
+    <div class="actions" style="margin-top:12px"><button class="btn" onclick="addSaleItem()">加入明细</button><button class="btn primary" onclick="createOrder()">保存销售单</button></div>
+    <div id="orderItems" style="margin-top:12px"></div></div>
+    <div class="card"><h4>联动汇总</h4><div id="saleSummary" class="summary-box">请选择商品并加入明细，系统会自动计算总金额、已收、欠款、GTB状态。</div></div>
+  </div>`;
+}
+function field(label, html){ return `<div class="field"><label>${label}</label>${html}</div>`; }
+function fillPrice() {
+  const productIdEl = document.getElementById('productId');
+  const unitPriceEl = document.getElementById('unitPrice');
+  const p = products.find(x => String(x.id) === String(productIdEl.value));
+  if (p) unitPriceEl.value = p.price;
+}
+function addSaleItem() {
+  const productIdEl = document.getElementById('productId');
+  const sourceEl = document.getElementById('source');
+  const qtyEl = document.getElementById('qty');
+  const unitPriceEl = document.getElementById('unitPrice');
+  const p = products.find(x => String(x.id) === String(productIdEl.value));
+  if (!p) return alert('请选择产品');
+  const item = { product_id: Number(productIdEl.value), source: sourceEl.value, qty: Number(qtyEl.value || 0), unit_price: Number(unitPriceEl.value || p.price) };
+  if (item.qty <= 0) return alert('数量必须大于0');
+  saleDraftItems.push(item);
+  renderDraftItems();
+  refreshSaleSummary();
+}
+function removeDraftItem(index) {
+  saleDraftItems.splice(index, 1);
+  renderDraftItems();
+  refreshSaleSummary();
+}
+function renderDraftItems() {
+  const box = document.getElementById('orderItems');
+  if (!box) return;
+  if (!saleDraftItems.length) {
+    box.innerHTML = '<div class="summary-box muted">暂无明细</div>';
+    return;
+  }
+  box.innerHTML = `<div class="table-wrap"><table><thead><tr><th>产品</th><th>来源</th><th>数量</th><th>单价</th><th>金额</th><th>操作</th></tr></thead><tbody>
+    ${saleDraftItems.map((item, index) => {
+      const p = products.find(x => x.id === item.product_id);
+      const amount = Number(item.qty) * Number(item.unit_price);
+      return `<tr><td>${p.name} / ${p.model}</td><td>${item.source === 'store' ? '门店' : '工厂'}</td><td>${item.qty}</td><td>${money(item.unit_price)}</td><td>${money(amount)}</td><td><button class="btn small danger" onclick="removeDraftItem(${index})">删除</button></td></tr>`;
+    }).join('')}
+  </tbody></table></div>`;
+}
+function refreshSaleSummary() {
+  const box = document.getElementById('saleSummary');
+  if (!box) return;
+  const paidAmountEl = document.getElementById('paidAmount');
+  const bankNameEl = document.getElementById('bankName');
+  const totalAmount = saleDraftItems.reduce((s, item) => s + Number(item.qty) * Number(item.unit_price), 0);
+  const paid = Number(paidAmountEl.value || 0);
+  const unpaid = Math.max(totalAmount - paid, 0);
+  const status = unpaid === 0 ? '已结清' : (paid > 0 ? '部分结清' : '欠款中');
+  const gtb = bankNameEl.value === 'GTB' && paid > 0 ? 'GTB未取' : '非GTB';
+  box.innerHTML = `<div><strong>总金额：</strong>${money(totalAmount)}</div>
+  <div><strong>已收金额：</strong>${money(paid)}</div>
+  <div><strong>剩余欠款：</strong>${money(unpaid)}</div>
+  <div style="margin-top:8px"><span class="pill ${unpaid===0?'ok':'warn'}">${status}</span> <span class="pill">${gtb}</span></div>
+  <div class="muted" style="margin-top:10px">保存后会自动联动：扣减库存、进入销售账目、进入欠款管理、进入银行收款。</div>`;
+}
+async function createOrder() {
+  try {
+    if (!saleDraftItems.length) return alert('请先加入商品明细');
+    const payload = {
+      sale_date: document.getElementById('saleDate').value,
+      customer_id: Number(document.getElementById('customerId').value),
+      payment_method: document.getElementById('paymentMethod').value,
+      bank_name: document.getElementById('bankName').value,
+      receive_type: document.getElementById('receiveType').value,
+      paid_amount: Number(document.getElementById('paidAmount').value || 0),
+      remark: document.getElementById('remark').value || '',
+      items: saleDraftItems
+    };
+    await api('/api/sales-orders', { method:'POST', body: JSON.stringify(payload) });
+    await loadBase();
+    currentPage = 'accounts';
+    await renderPage();
+    alert('销售单已保存，并已联动库存/账目/欠款');
+  } catch (e) {
+    alert(e.message || '保存失败');
+  }
+}
+function renderAccounts(){
+  return `<div class="card"><h4>销售账目</h4><div class="table-wrap"><table><thead><tr><th>日期</th><th>客户</th><th>单号</th><th>总金额</th><th>已收</th><th>欠款</th><th>状态</th><th>GTB状态</th><th>操作</th></tr></thead><tbody>
+    ${salesOrders.map(o=>`<tr><td>${o.sale_date}</td><td>${o.customer_name}</td><td>${o.order_no}</td><td>${money(o.total_amount)}</td><td>${money(o.paid_amount)}</td><td>${money(o.unpaid_amount)}</td><td><span class="pill ${Number(o.unpaid_amount)===0?'ok':(Number(o.paid_amount)>0?'warn':'bad')}">${o.payment_status}</span></td><td>${o.gtb_status}</td><td>${Number(o.unpaid_amount)>0?`<button class="btn small" onclick="repay(${o.id})">还款</button> `:''}${o.gtb_status==='GTB未取'?`<button class="btn small" onclick="gtb(${o.id})">标记已取</button> `:''}<button class="btn small danger" onclick="removeOrder(${o.id})">删除</button></td></tr>`).join('')}
+    </tbody></table></div></div>`;
+}
+async function repay(id){
+  const amount = Number(prompt('请输入还款金额') || 0);
+  if (!amount) return;
+  try { await api('/api/sales-orders/' + id + '/repay', { method:'POST', body: JSON.stringify({ amount }) }); await loadBase(); await renderPage(); } catch(e){ alert(e.message); }
+}
+async function gtb(id){
+  try { await api('/api/sales-orders/' + id + '/gtb-withdraw', { method:'POST' }); await loadBase(); await renderPage(); } catch(e){ alert(e.message); }
+}
+async function removeOrder(id){
+  if (!confirm('确定删除这笔销售单？删除后会恢复库存。')) return;
+  try { await api('/api/sales-orders/' + id, { method:'DELETE' }); await loadBase(); await renderPage(); } catch(e){ alert(e.message); }
+}
+function renderReceivables(){
+  const rows = salesOrders.filter(o => Number(o.unpaid_amount) > 0);
+  return `<div class="card"><h4>欠款管理</h4><div class="table-wrap"><table><thead><tr><th>客户</th><th>日期</th><th>原始欠款</th><th>已还</th><th>剩余</th><th>状态</th></tr></thead><tbody>
+    ${rows.map(o=>`<tr><td>${o.customer_name}</td><td>${o.sale_date}</td><td>${money(o.total_amount)}</td><td>${money(o.paid_amount)}</td><td>${money(o.unpaid_amount)}</td><td>${o.payment_status}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+}
+function renderBank(){
+  const rows = salesOrders.filter(o => o.payment_method === 'bank' || o.bank_name === 'GTB');
+  return `<div class="card"><h4>银行收款</h4><div class="table-wrap"><table><thead><tr><th>日期</th><th>客户</th><th>银行</th><th>金额</th><th>状态</th></tr></thead><tbody>
+    ${rows.map(o=>`<tr><td>${o.sale_date}</td><td>${o.customer_name}</td><td>${o.bank_name}</td><td>${money(o.paid_amount)}</td><td>${o.gtb_status}</td></tr>`).join('')}
+    </tbody></table></div></div>`;
+}
+function renderReports(){
+  const total = salesOrders.reduce((s,o)=>s + Number(o.total_amount), 0);
+  const paid = salesOrders.reduce((s,o)=>s + Number(o.paid_amount), 0);
+  const unpaid = salesOrders.reduce((s,o)=>s + Number(o.unpaid_amount), 0);
+  return `<div class="grid stats">
+    ${statCard('总销售额', money(total), '数据库累计')}
+    ${statCard('已收金额', money(paid), '客户已付款')}
+    ${statCard('未收金额', money(unpaid), '当前应收')}
+    ${statCard('订单数量', money(salesOrders.length), '全部销售单')}
+  </div>`;
+}
+function renderSettings(){
+  return '<div class="card"><h4>系统设置</h4><div class="muted">当前版本：完整版（左侧完整菜单 + 可点开页面 + 销售开单联动）。下一步可继续接 Excel 导出、PDF 销售单、权限管理、APK。</div></div>';
+}
+async function renderPage() {
+  const contentEl = document.getElementById('content');
+  renderNav();
+  setPageMeta();
+  if (currentPage === 'dashboard') contentEl.innerHTML = await renderDashboard();
+  if (currentPage === 'products') contentEl.innerHTML = renderProducts();
+  if (currentPage === 'customers') contentEl.innerHTML = renderCustomers();
+  if (currentPage === 'sales') contentEl.innerHTML = renderSales();
+  if (currentPage === 'accounts') contentEl.innerHTML = renderAccounts();
+  if (currentPage === 'receivables') contentEl.innerHTML = renderReceivables();
+  if (currentPage === 'bank') contentEl.innerHTML = renderBank();
+  if (currentPage === 'reports') contentEl.innerHTML = renderReports();
+  if (currentPage === 'settings') contentEl.innerHTML = renderSettings();
+  if (currentPage === 'sales') {
+    renderDraftItems();
+    refreshSaleSummary();
+  }
+}
+document.getElementById('password').addEventListener('keydown', function(e){ if(e.key === 'Enter') login(); });
+if (token && currentUser) {
+  showApp().catch(err => {
+    alert(err.message || '加载后台失败');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  });
+}
 </script>
 </body>
 </html>
