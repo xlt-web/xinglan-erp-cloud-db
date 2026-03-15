@@ -234,7 +234,7 @@ app.get('/api/export/json', auth, async (_req, res) => {
   ok(res, { products: products.rows, customers: customers.rows, sales_orders: salesOrders.rows, repayments: repayments.rows });
 });
 
-app.get('/{*splat}', (_req, res) => {
+app.get('*', (_req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
