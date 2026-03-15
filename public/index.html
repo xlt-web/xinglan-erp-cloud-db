@@ -56,7 +56,11 @@
     <div id="content"></div>
   </main>
 </div>
-
+document.getElementById('password').addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') {
+    login();
+  }
+});
 <script>
 let currentPage = 'dashboard';
 let token = localStorage.getItem('token') || '';
@@ -111,14 +115,26 @@ async function loadBase(){
     api('/api/sales-orders')
   ]);
 }
-async function showApp(){
-  document.getElementById('loginView').classList.add('hidden');
-  document.getElementById('appView').classList.remove('hidden');
-  document.getElementById('userInfo').textContent = currentUser.role + ' / ' + currentUser.username;
+async function showApp() {
+  const loginViewEl = document.getElementById('loginView');
+  const appViewEl = document.getElementById('appView');
+  const userInfoEl = document.getElementById('userInfo');
+
+  if (!currentUser) {
+    throw new Error('用户信息不存在');
+  }
+
+  loginViewEl.classList.add('hidden');
+  appViewEl.classList.remove('hidden');
+  userInfoEl.textContent = (currentUser.role || '管理员') + ' / ' + (currentUser.username || 'admin');
+
   await loadBase();
-  renderPage();
+  await renderPage();
 }
-function go(page){ currentPage = page; renderPage(); }
+async function go(page) {
+  currentPage = page;
+  await renderPage();
+}
 async function exportData(){
   const data = await api('/api/export/json');
   const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json;charset=utf-8' });
