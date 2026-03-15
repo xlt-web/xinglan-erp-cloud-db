@@ -79,15 +79,30 @@ function money(v){return new Intl.NumberFormat('zh-CN').format(Number(v||0));}
 function today(){return new Date().toISOString().slice(0,10);}
 function renderNav(){document.getElementById('nav').innerHTML=MENUS.map(([key,label])=>'<button class="'+(currentPage===key?'active':'')+'" onclick="go(\\''+key+'\\')">'+label+'</button>').join('');}
 function logout(){localStorage.removeItem('token');localStorage.removeItem('user');location.reload();}
-async function login(){
-  try{
-    const data = await api('/api/login', { method:'POST', body: JSON.stringify({ username: username.value, password: password.value }) });
+async function login() {
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+
+  try {
+    const data = await api('/api/login', {
+      method: 'POST',
+      body: JSON.stringify({
+        username: usernameInput.value.trim(),
+        password: passwordInput.value.trim()
+      })
+    });
+
     token = data.token;
     currentUser = data.user;
+
     localStorage.setItem('token', token);
     localStorage.setItem('user', JSON.stringify(currentUser));
-    showApp();
-  }catch(e){ alert(e.message); }
+
+    await showApp();
+
+  } catch (e) {
+    alert(e.message || '登录失败');
+  }
 }
 async function loadBase(){
   [products, customers, salesOrders] = await Promise.all([
