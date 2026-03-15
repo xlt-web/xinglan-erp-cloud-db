@@ -234,7 +234,10 @@ app.get('/api/export/json', auth, async (_req, res) => {
   ok(res, { products: products.rows, customers: customers.rows, sales_orders: salesOrders.rows, repayments: repayments.rows });
 });
 
-app.get('*', (_req, res) => {
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/')) {
+    return next();
+  }
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
