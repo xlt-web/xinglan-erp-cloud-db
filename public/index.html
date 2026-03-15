@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>XINGLAN ERP 云端数据库版</title>
+  <style>
+    :root{--bg:#f5f7fb;--card:#fff;--line:#e5e7eb;--text:#0f172a;--muted:#64748b;--nav:#0f172a;--nav2:#1e293b;--primary:#111827;--red:#dc2626;--radius:18px;--shadow:0 10px 30px rgba(15,23,42,.08)}
+    *{box-sizing:border-box} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text)}
+    .login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+    .login-card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:28px}
+    .login-card h1{margin:0 0 8px;font-size:28px}.login-card p{margin:0 0 18px;color:var(--muted)}
+    .field{margin-bottom:14px}.field label{display:block;font-size:13px;margin-bottom:8px;color:var(--muted)}
+    .field input,.field select,.field textarea{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:14px;font-size:14px;background:#fff}.field textarea{min-height:88px;resize:vertical}
+    .btn{border:1px solid var(--line);background:#fff;color:var(--text);padding:10px 14px;border-radius:14px;cursor:pointer;font-size:14px}
+    .btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}.btn.danger{background:var(--red);color:#fff;border-color:var(--red)}.btn.full{width:100%}
+    .muted{color:var(--muted)}.small{font-size:12px}.hidden{display:none !important}
+    .app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}.sidebar{background:var(--nav);color:#fff;padding:18px 14px}.brand{padding:12px 12px 20px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:14px}.brand h2{margin:0;font-size:22px}.brand div{margin-top:6px;color:rgba(255,255,255,.65);font-size:12px}
+    .nav button{width:100%;text-align:left;border:0;background:transparent;color:#e2e8f0;padding:12px 14px;border-radius:14px;cursor:pointer;margin-bottom:6px;font-size:14px}.nav button:hover,.nav button.active{background:var(--nav2);color:#fff}
+    .main{padding:20px}.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:24px;padding:18px 22px;box-shadow:var(--shadow);margin-bottom:16px}.topbar h3{margin:0;font-size:24px}.topbar p{margin:6px 0 0;color:var(--muted);font-size:13px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap}.grid{display:grid;gap:16px}.stats{grid-template-columns:repeat(5,minmax(0,1fr))}.two-col{grid-template-columns:2fr 1fr}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}.card h4{margin:0 0 14px;font-size:18px}.stat .label{font-size:13px;color:var(--muted)}.stat .value{font-size:28px;font-weight:700;margin-top:8px}.stat .hint{font-size:12px;color:var(--muted);margin-top:6px}
+    table{width:100%;border-collapse:collapse;font-size:14px} th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:top} th{color:var(--muted);font-weight:600}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:16px}
+    .pill{display:inline-block;padding:4px 10px;border-radius:999px;font-size:12px;background:#eef2ff;color:#3730a3}.pill.ok{background:#dcfce7;color:#166534}.pill.warn{background:#ffedd5;color:#9a3412}.pill.bad{background:#fee2e2;color:#991b1b}
+    .chart{height:240px;display:flex;align-items:end;gap:10px;background:#f8fafc;border:1px solid var(--line);border-radius:16px;padding:16px}.bar-wrap{flex:1;text-align:center}.bar{width:100%;background:linear-gradient(180deg,#0f172a,#334155);border-radius:12px 12px 0 0;min-height:14px}.bar-label{font-size:12px;color:var(--muted);margin-top:8px}
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.form-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}.row-actions{display:flex;gap:8px;flex-wrap:wrap}.info-box{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}.empty{text-align:center;color:var(--muted);padding:26px}
+    @media (max-width:1200px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.two-col{grid-template-columns:1fr}}
+    @media (max-width:860px){.app{grid-template-columns:1fr}.topbar{flex-direction:column;align-items:flex-start}.form-grid,.form-grid.three,.stats{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<div id="loginView" class="login-wrap">
+  <div class="login-card">
+    <h1>XINGLAN ERP</h1>
+    <p>云端数据库版</p>
+    <div class="field"><label>账号</label><input id="username" value="admin"></div>
+    <div class="field"><label>密码</label><input id="password" type="password" value="123456"></div>
+    <button class="btn primary full" onclick="login()">登录</button>
+    <div class="small muted" style="margin-top:14px;line-height:1.8">默认账号：admin / 123456</div>
+  </div>
+</div>
+
+<div id="appView" class="app hidden">
+  <aside class="sidebar">
+    <div class="brand"><h2>XINGLAN ERP</h2><div id="userInfo">管理员</div></div>
+    <div class="nav" id="nav"></div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div><h3 id="pageTitle">总概览</h3><p>数据来自云端 PostgreSQL。</p></div>
+      <div class="actions">
+        <button class="btn" onclick="exportData()">导出数据</button>
+        <button class="btn danger" onclick="logout()">退出</button>
+      </div>
+    </div>
+    <div id="content"></div>
+  </main>
+</div>
+
+<script>
+let currentPage = 'dashboard';
+let token = localStorage.getItem('token') || '';
+let currentUser = JSON.parse(localStorage.getItem('user') || 'null');
+let products = [];
+let customers = [];
+let salesOrders = [];
+const MENUS=[['dashboard','总概览'],['products','产品资料'],['customers','客户管理'],['sales','销售开单'],['accounts','销售账目'],['receivables','欠款管理'],['bank','银行收款'],['reports','月度报表'],['settings','系统设置']];
+
+async function api(path, options = {}) {
+  const res = await fetch(path, {
+    headers: { 'Content-Type': 'application/json', 'x-user': currentUser?.username || 'admin', ...(options.headers || {}) },
+    ...options
+  });
+  const data = await res.json();
+  if (!res.ok || data.code !== 0) throw new Error(data.message || '请求失败');
+  return data.data;
+}
+function money(v){return new Intl.NumberFormat('zh-CN').format(Number(v||0));}
+function today(){return new Date().toISOString().slice(0,10);}
+function renderNav(){document.getElementById('nav').innerHTML=MENUS.map(([key,label])=>'<button class="'+(currentPage===key?'active':'')+'" onclick="go(\\''+key+'\\')">'+label+'</button>').join('');}
+function logout(){localStorage.removeItem('token');localStorage.removeItem('user');location.reload();}
+async function login(){
+  try{
+    const data = await api('/api/login', { method:'POST', body: JSON.stringify({ username: username.value, password: password.value }) });
+    token = data.token;
+    currentUser = data.user;
+    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(currentUser));
+    showApp();
+  }catch(e){ alert(e.message); }
+}
+async function loadBase(){
+  [products, customers, salesOrders] = await Promise.all([
+    api('/api/products'),
+    api('/api/customers'),
+    api('/api/sales-orders')
+  ]);
+}
+async function showApp(){
+  document.getElementById('loginView').classList.add('hidden');
+  document.getElementById('appView').classList.remove('hidden');
+  document.getElementById('userInfo').textContent = currentUser.role + ' / ' + currentUser.username;
+  await loadBase();
+  renderPage();
+}
+function go(page){ currentPage = page; renderPage(); }
+async function exportData(){
+  const data = await api('/api/export/json');
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'xinglan_erp_cloud_export.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+function renderDashboard(){
+  return api('/api/summary').then(s => '<div class="grid stats">'+
+    '<div class="card stat"><div class="label">总客户欠款</div><div class="value">'+money(s.total_debt)+'</div><div class="hint">来自数据库实时汇总</div></div>'+
+    '<div class="card stat"><div class="label">今日销售额</div><div class="value">'+money(s.today_sales)+'</div><div class="hint">按今天日期统计</div></div>'+
+    '<div class="card stat"><div class="label">总销售额</div><div class="value">'+money(s.total_sales)+'</div><div class="hint">全部销售单累计</div></div>'+
+    '<div class="card stat"><div class="label">GTB未取金额</div><div class="value">'+money(s.gtb_pending)+'</div><div class="hint">银行待取</div></div>'+
+    '<div class="card stat"><div class="label">今日开单数</div><div class="value">'+money(s.today_orders)+'</div><div class="hint">实时订单数量</div></div>'+
+  '</div>');
+}
+function renderProducts(){
+  return '<div class="card"><h4>产品资料</h4><div class="table-wrap"><table><thead><tr><th>产品名称</th><th>型号</th><th>分类</th><th>单位</th><th>默认售价</th><th>门店库存</th><th>工厂库存</th></tr></thead><tbody>'+
+    products.map(p=>'<tr><td>'+p.name+'</td><td>'+p.model+'</td><td>'+p.category+'</td><td>'+p.unit+'</td><td>'+money(p.price)+'</td><td>'+p.store_stock+'</td><td>'+p.factory_stock+'</td></tr>').join('')+
+    '</tbody></table></div></div>';
+}
+function renderCustomers(){
+  return '<div class="card"><h4>客户管理</h4><div class="table-wrap"><table><thead><tr><th>客户名称</th><th>电话</th><th>地址</th><th>旧欠款</th></tr></thead><tbody>'+
+    customers.map(c=>'<tr><td>'+c.name+'</td><td>'+c.phone+'</td><td>'+c.address+'</td><td>'+money(c.opening_debt)+'</td></tr>').join('')+
+    '</tbody></table></div></div>';
+}
+function renderSales(){
+  return '<div class="card"><h4>销售开单</h4><div class="form-grid">'+
+    '<div class="field"><label>销售日期</label><input id="saleDate" type="date" value="'+today()+'"></div>'+
+    '<div class="field"><label>客户</label><select id="customerId">'+customers.map(c=>'<option value="'+c.id+'">'+c.name+'</option>').join('')+'</select></div>'+
+    '<div class="field"><label>收款方式</label><select id="paymentMethod"><option value="cash">现金结清</option><option value="bank">银行转账</option><option value="credit">全额记账</option><option value="partial">部分付款</option></select></div>'+
+    '<div class="field"><label>收款银行</label><select id="bankName"><option value="现金">现金</option><option value="KBZ">KBZ</option><option value="CB">CB</option><option value="GTB">GTB</option></select></div>'+
+    '<div class="field"><label>收款归属</label><select id="receiveType"><option value="store">门店收款</option><option value="factory">工厂收款</option><option value="bank">银行收款</option></select></div>'+
+    '<div class="field"><label>已收金额</label><input id="paidAmount" type="number" value="0"></div>'+
+    '<div class="field"><label>产品</label><select id="productId" onchange="fillPrice()">'+products.map(p=>'<option value="'+p.id+'">'+p.name+' / '+p.model+'</option>').join('')+'</select></div>'+
+    '<div class="field"><label>出库来源</label><select id="source"><option value="store">门店库存</option><option value="factory">工厂库存</option></select></div>'+
+    '<div class="field"><label>数量</label><input id="qty" type="number" value="1"></div>'+
+    '<div class="field"><label>单价</label><input id="unitPrice" type="number" value="'+(products[0]?.price || 0)+'"></div>'+
+    '<div class="field" style="grid-column:1/-1"><label>备注</label><textarea id="remark"></textarea></div>'+
+    '</div><div style="margin-top:14px"><button class="btn primary" onclick="createOrder()">保存销售单</button></div></div>';
+}
+function fillPrice(){
+  const p = products.find(x => String(x.id) === String(productId.value));
+  if (p) unitPrice.value = p.price;
+}
+async function createOrder(){
+  try{
+    const p = products.find(x => String(x.id) === String(productId.value));
+    const payload = {
+      sale_date: saleDate.value,
+      customer_id: Number(customerId.value),
+      payment_method: paymentMethod.value,
+      bank_name: bankName.value,
+      receive_type: receiveType.value,
+      paid_amount: Number(paidAmount.value || 0),
+      remark: remark.value || '',
+      items: [{ product_id: Number(productId.value), source: source.value, qty: Number(qty.value || 0), unit_price: Number(unitPrice.value || p.price) }]
+    };
+    await api('/api/sales-orders', { method:'POST', body: JSON.stringify(payload) });
+    await loadBase();
+    currentPage = 'accounts';
+    renderPage();
+    alert('销售单已保存');
+  }catch(e){ alert(e.message); }
+}
+function renderAccounts(){
+  return '<div class="card"><h4>销售账目</h4><div class="table-wrap"><table><thead><tr><th>日期</th><th>客户</th><th>单号</th><th>总金额</th><th>已收</th><th>欠款</th><th>状态</th><th>GTB状态</th><th>操作</th></tr></thead><tbody>'+
+    salesOrders.map(o=>'<tr><td>'+o.sale_date+'</td><td>'+o.customer_name+'</td><td>'+o.order_no+'</td><td>'+money(o.total_amount)+'</td><td>'+money(o.paid_amount)+'</td><td>'+money(o.unpaid_amount)+'</td><td><span class="pill '+(Number(o.unpaid_amount)===0?'ok':(Number(o.paid_amount)>0?'warn':'bad'))+'">'+o.payment_status+'</span></td><td>'+o.gtb_status+'</td><td>'+
+      (Number(o.unpaid_amount)>0?'<button class="btn" onclick="repay('+o.id+')">还款</button> ':'')+
+      (o.gtb_status==='GTB未取'?'<button class="btn" onclick="gtb('+o.id+')">标记已取</button> ':'')+
+      '<button class="btn danger" onclick="removeOrder('+o.id+')">删除</button></td></tr>').join('')+
+    '</tbody></table></div></div>';
+}
+async function repay(id){
+  const amount = Number(prompt('请输入还款金额') || 0);
+  if (!amount) return;
+  try{
+    await api('/api/sales-orders/' + id + '/repay', { method:'POST', body: JSON.stringify({ amount }) });
+    await loadBase(); renderPage();
+  }catch(e){ alert(e.message); }
+}
+async function gtb(id){
+  try{
+    await api('/api/sales-orders/' + id + '/gtb-withdraw', { method:'POST' });
+    await loadBase(); renderPage();
+  }catch(e){ alert(e.message); }
+}
+async function removeOrder(id){
+  if (!confirm('确定删除这笔销售单？删除后会恢复库存。')) return;
+  try{
+    await api('/api/sales-orders/' + id, { method:'DELETE' });
+    await loadBase(); renderPage();
+  }catch(e){ alert(e.message); }
+}
+function renderReceivables(){
+  const rows = salesOrders.filter(o => Number(o.unpaid_amount) > 0);
+  return '<div class="card"><h4>欠款管理</h4><div class="table-wrap"><table><thead><tr><th>客户</th><th>日期</th><th>原始欠款</th><th>已还</th><th>剩余</th><th>状态</th></tr></thead><tbody>'+
+    rows.map(o=>'<tr><td>'+o.customer_name+'</td><td>'+o.sale_date+'</td><td>'+money(o.total_amount)+'</td><td>'+money(o.paid_amount)+'</td><td>'+money(o.unpaid_amount)+'</td><td>'+o.payment_status+'</td></tr>').join('')+
+    '</tbody></table></div></div>';
+}
+function renderBank(){
+  const rows = salesOrders.filter(o => o.payment_method === 'bank' || o.bank_name === 'GTB');
+  return '<div class="card"><h4>银行收款</h4><div class="table-wrap"><table><thead><tr><th>日期</th><th>客户</th><th>银行</th><th>金额</th><th>状态</th></tr></thead><tbody>'+
+    rows.map(o=>'<tr><td>'+o.sale_date+'</td><td>'+o.customer_name+'</td><td>'+o.bank_name+'</td><td>'+money(o.paid_amount)+'</td><td>'+o.gtb_status+'</td></tr>').join('')+
+    '</tbody></table></div></div>';
+}
+function renderReports(){
+  const total = salesOrders.reduce((s,o)=>s + Number(o.total_amount), 0);
+  const paid = salesOrders.reduce((s,o)=>s + Number(o.paid_amount), 0);
+  const unpaid = salesOrders.reduce((s,o)=>s + Number(o.unpaid_amount), 0);
+  return '<div class="grid stats">'+
+    '<div class="card stat"><div class="label">总销售额</div><div class="value">'+money(total)+'</div><div class="hint">数据库累计</div></div>'+
+    '<div class="card stat"><div class="label">已收金额</div><div class="value">'+money(paid)+'</div><div class="hint">客户已付款</div></div>'+
+    '<div class="card stat"><div class="label">未收金额</div><div class="value">'+money(unpaid)+'</div><div class="hint">当前应收</div></div>'+
+    '</div>';
+}
+function renderSettings(){
+  return '<div class="card"><h4>系统设置</h4><div class="muted">当前静态前端 + 云端 PostgreSQL 后端版。下一步可继续接权限、Excel、PDF、线上域名。</div></div>';
+}
+async function renderPage(){
+  renderNav();
+  pageTitle.textContent = MENUS.find(m => m[0] === currentPage)[1];
+  if (currentPage === 'dashboard') content.innerHTML = await renderDashboard();
+  if (currentPage === 'products') content.innerHTML = renderProducts();
+  if (currentPage === 'customers') content.innerHTML = renderCustomers();
+  if (currentPage === 'sales') content.innerHTML = renderSales();
+  if (currentPage === 'accounts') content.innerHTML = renderAccounts();
+  if (currentPage === 'receivables') content.innerHTML = renderReceivables();
+  if (currentPage === 'bank') content.innerHTML = renderBank();
+  if (currentPage === 'reports') content.innerHTML = renderReports();
+  if (currentPage === 'settings') content.innerHTML = renderSettings();
+}
+if (token && currentUser) showApp();
+</script>
+</body>
+</html>
